@@ -1,6 +1,7 @@
 package com.example.recordingdeneme2.Utils;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.recordingdeneme2.CSV.CreateCSV;
+import com.example.recordingdeneme2.CSV.ReadCSV;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,6 +29,7 @@ public class Trainer extends Service {
     String name;
     int length;
     ArrayList<float[]> arrayInputManipulated;
+    public static Context context;
 
     @Nullable
     @Override
@@ -37,22 +40,28 @@ public class Trainer extends Service {
 
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Trainer testTrainer = new Trainer(Normalizer.normalize(ReadCSV.readCSV, 1), "KEREMTEST", 100);
+        extractNamesNumbersAndFiles();
+        return START_NOT_STICKY;
+    }
 
     public Trainer(ArrayList<float[]> rawArrayListInput, String name, int length){
-        takeInputAndManipulate(Normalizer.normalize(rawArrayListInput, DEFAULT_CUT_SECONDS) , name, length);
+        takeInputAndManipulate(rawArrayListInput , name, length);
     }
 
     public void takeInputAndManipulate(ArrayList<float[]> arrayInput, String name, int length){
 
         if (inputCheck(arrayInput, name, length)){
             ArrayList<float[]> arrayInputManipulated = new ArrayList<float[]>();
-            for(int i = 0; i < length ; ++i) {
+            for(int i = 0; i < length ; i++) {
                 arrayInputManipulated.add(arrayInput.get(i));
             }
             Trainer trainObject = new Trainer();
             trainObject.setSettings(name, length, arrayInputManipulated);
             namesNumbersAndAndFiles.add(trainObject);
-            extractNamesNumbersAndFiles();
+//IT WAS HERE             extractNamesNumbersAndFiles();
 
         }
     }
@@ -88,7 +97,7 @@ public class Trainer extends Service {
                     new Runnable() {
                         @Override
                         public void run() {
-                            Log.e("WEEW", "weew");
+
                             threadWork(finalString1, finalFileName);
                         }
                     }
@@ -102,6 +111,8 @@ public class Trainer extends Service {
         }else{
 
             if(!finalString.equals("")) {
+                Log.e("Wew", "WEEWWWW");
+
                 File fileToWrite = new File(getExternalFilesDir("TrainOutputs"),fileName);
                 FileOutputStream fos = null;
                 try {

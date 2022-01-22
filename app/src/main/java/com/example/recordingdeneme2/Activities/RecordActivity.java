@@ -1,12 +1,17 @@
 package com.example.recordingdeneme2.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.recordingdeneme2.R;
@@ -36,12 +41,26 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void startStopRecording(View view){
         if(ValueRecorder.recordSwitch == false){
             startStopButton.setText("Recording...");
             ValueRecorder.recordSwitch = true;
             Intent valueRecorderIntent = new Intent(getApplication(), ValueRecorder.class);
-            startService(valueRecorderIntent);
+           // startService(valueRecorderIntent);
+
+            //
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                String packageName = getPackageName();
+                PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    valueRecorderIntent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    valueRecorderIntent.setData(Uri.parse("package:" + packageName));
+                    startService(valueRecorderIntent);
+                }
+            }
+            //
 
         }else{
             startStopButton.setText("Record!");

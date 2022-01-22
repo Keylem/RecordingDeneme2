@@ -50,7 +50,7 @@ public class Normalizer extends Service {
             }
             return normalizedArrayList;
         }else{
-            Log.e("Normalise error!", "Please fix your input!");
+            Log.e("Normalize error!", "Please fix your input!");
             return null;
         }
     }

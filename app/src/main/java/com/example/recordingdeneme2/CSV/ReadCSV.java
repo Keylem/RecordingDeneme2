@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class ReadCSV extends Service {
     public static  ArrayList<float[]> readCSV = new ArrayList<float[]>();
     public static File readCSVfile;
+    public static ArrayList<String> readFileNames = new ArrayList<String>();
 
     private float time, x, y, z;
 

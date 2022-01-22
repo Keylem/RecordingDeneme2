@@ -119,7 +119,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                                 ArrayList<float[]> test1 = Normalizer.normalize(ReadCSV.readCSV,1);
                             }
                         }if(menuItem.getTitle().equals("TRAINOUTPUT")){
-                            Trainer testTrainer = new Trainer(ReadCSV.readCSV, "KEREMTEST", 20);
+                            //Trainer testTrainer = new Trainer(Normalizer.normalize(ReadCSV.readCSV, 1), "KEREMTEST", 20);
+                            Intent intent = new Intent(context, Trainer.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startService(intent);
                         }
 
 
