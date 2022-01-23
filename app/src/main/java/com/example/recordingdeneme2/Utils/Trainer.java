@@ -42,7 +42,7 @@ public class Trainer extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Trainer testTrainer = new Trainer(Normalizer.normalize(ReadCSV.readCSV, 1), "KEREMTEST", 100);
+        Trainer testTrainer = new Trainer(Normalizer.normalize(ReadCSV.readCSV, 3), ReadCSV.name, 200);
         extractNamesNumbersAndFiles();
         return START_NOT_STICKY;
     }

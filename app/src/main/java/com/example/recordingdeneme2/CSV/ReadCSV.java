@@ -18,6 +18,7 @@ public class ReadCSV extends Service {
     public static  ArrayList<float[]> readCSV = new ArrayList<float[]>();
     public static File readCSVfile;
     public static ArrayList<String> readFileNames = new ArrayList<String>();
+    public static String name;
 
     private float time, x, y, z;
 
@@ -27,6 +28,8 @@ public class ReadCSV extends Service {
             readCSV.clear();
         }
         if(ReadCSV.readCSVfile!= null){
+            this.name = readCSVfile.getName().substring(0, readCSVfile.getName().lastIndexOf('.'));
+            ReadCSV.readFileNames.add(this.name);
             tryReadingCSV(readCSVfile);
         }
 
